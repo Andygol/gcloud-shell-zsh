@@ -37,7 +37,7 @@ install_zsh () {
 
 is_exist() {
     local file_name=$1
-    [ -f "$file_name" ] || [ -h "$file_name" ] || echo "$file_name not exist"
+    [ -f "$file_name" ] || [ -h "$file_name" ]
     return $?
 }
 
