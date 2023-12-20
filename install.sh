@@ -28,15 +28,11 @@ install_package() {
     if ! command -v $package_name &> /dev/null; then
         echo "Installing $package_name..."
         if [ -z "$package_version" ]; then
-            sudo apt install -y $package_name
+            sudo apt install -y $package_name && true
         else
-            sudo apt install -y $package_name=$package_version
+            sudo apt install -y $package_name=$package_version && true
         fi
     fi
-}
-
-install_zsh () {
-    install_package zsh
 }
 
 is_exist() {
@@ -88,7 +84,7 @@ init_zsh() {
     
     echo -e "Install ZSH \n"
 
-    install_zsh
+    install_package zsh
 
     if [ $(ps -p $$ -o comm=) = "bash" ]; then
         
