@@ -108,7 +108,7 @@ init_zsh() {
                 echo "Found ~/.bashrc, backing up to ~/.bashrc.pre-zsh"
                 mv $HOME/.bashrc $HOME/.bashrc.pre-zsh
 
-                echo 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/Andygol/gcloud-shell-zsh/main/install.sh"' >> $HOME/.bashrc
+                echo 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/Andygol/gcloud-shell-zsh/main/install.sh)"' >> $HOME/.bashrc
             fi
             install_antigen
             configure_zshrc
