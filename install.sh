@@ -1,20 +1,24 @@
 #!/bin/sh
 
+ANTIGEN=$HOME/.antigen
+
 banner() {
-    echo -e "clean" >> $HOME/.zshrc
-    echo -e "echo '  _______      __                __     _______ _______ ___ ___ '" >> $HOME/.zshrc
-    echo -e "echo ' |   _   .----|  .-----.--.--.--|  |   |   _   |   _   |   Y   |'" >> $HOME/.zshrc
-    echo -e "echo ' |.  |___|  __|  |  _  |  |  |  _  |   |___|   |   |___|.  |   |'" >> $HOME/.zshrc
-    echo -e "echo ' |.  |   |____|__|_____|_____|_____|    /  ___/|____   |.  _   |'" >> $HOME/.zshrc
-    echo -e "echo ' |:  ┴   |                             |:  ┴  \|:  ┴   |:  |   |'" >> $HOME/.zshrc
-    echo -e "echo ' |::.. . |                             |::.. . |::.. . |::.|:. |'" >> $HOME/.zshrc
-    echo -e "echo ' \`-------’                             \`-------\`-------\`--- ---'" >> $HOME/.zshrc
-    echo -e "echo '                                                                '" >> $HOME/.zshrc
-    echo -e "echo ' Feature rich Google Cloud Shell with ZSH                       '" >> $HOME/.zshrc
-    echo -e "echo '                                                                '" >> $HOME/.zshrc
-    echo -e "echo ' Check for updates https://github.com/Andygol/gcloud-shell-zsh  '" >> $HOME/.zshrc
-    echo -e "echo '                                                                '" >> $HOME/.zshrc
-    echo -e "echo '                                                                '" >> $HOME/.zshrc
+    local RC_FILE=$1
+
+    echo -e "clear\n" >> $RC_FILE
+    echo -e "echo '  _______      __                __     _______ _______ ___ ___ '" >> $RC_FILE
+    echo -e "echo ' |   _   .----|  .-----.--.--.--|  |   |   _   |   _   |   Y   |'" >> $RC_FILE
+    echo -e "echo ' |.  |___|  __|  |  _  |  |  |  _  |   |___|   |   |___|.  |   |'" >> $RC_FILE
+    echo -e "echo ' |.  |   |____|__|_____|_____|_____|    /  ___/|____   |.  _   |'" >> $RC_FILE
+    echo -e "echo ' |:  ┴   |                             |:  ┴  \|:  ┴   |:  |   |'" >> $RC_FILE
+    echo -e "echo ' |::.. . |                             |::.. . |::.. . |::.|:. |'" >> $RC_FILE
+    echo -e "echo ' \`-------’                             \`-------\`-------\`--- ---’'" >> $RC_FILE
+    echo -e "echo '                                                                '" >> $RC_FILE
+    echo -e "echo ' Feature rich Google Cloud Shell with ZSH                       '" >> $RC_FILE
+    echo -e "echo '                                                                '" >> $RC_FILE
+    echo -e "echo ' Check for updates https://github.com/Andygol/gcloud-shell-zsh  '" >> $RC_FILE
+    echo -e "echo '                                                                '" >> $RC_FILE
+    echo -e "echo ' Use omz plugin enable <list of plugins> to add couple of them  '" >> $RC_FILE
 }
 
 install_package() {
@@ -42,79 +46,89 @@ is_exist() {
 }
 
 install_antigen() {
-    is_exist $HOME/.antigen/antigen.zsh
+    is_exist $ANTIGEN/antigen.zsh
     if [ $? -ne 0 ]; then
         echo "Installing antigen..."
-        curl -L git.io/antigen > $HOME/.antigen/antigen.zsh
+        mkdir -p $ANTIGEN
+        curl -L git.io/antigen > $ANTIGEN/antigen.zsh
     fi
 }
 
-configure_zshrc() {
-    is_exist $HOME/.zshrc
+install_omz() {
+    is_exist $HOME/.oh-my-zsh/oh-my-zsh.sh
     if [ $? -ne 0 ]; then
-        touch $HOME/.zshrc
-        echo "Configuring zshrc..."
+        echo "Installing Oh My Zsh..."
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    fi
+}
 
-        banner
+configure_antigen() {
+    is_exist $ANTIGEN/.antigen.sh
+    if [ $? -ne 0 ]; then
+        touch $ANTIGEN/.antigen.sh
+        echo -e "Configuring .antigen.sh ...\n"
 
         echo -e \
-"source \$HOME/.antigen/antigen.zsh \n\n\
-# Load the oh-my-zsh's library. \n\
-antigen use oh-my-zsh \n\n\
+"source $ANTIGEN/antigen.zsh \n\n\
+\
 # Syntax highlighting bundle. \n\
+antigen bundle zsh-users/zsh-completions \n\
 antigen bundle zsh-users/zsh-syntax-highlighting \n\
 antigen bundle zsh-users/zsh-autosuggestions \n\
-antigen bundle zsh-users/zsh-aliases-lsd \n\n\
-# Bundles from the default repo (robbyrussell's oh-my-zsh).\n\
-antigen bundle git \n\
-antigen bundle gh \n\
-antigen bundle docker \n\
-antigen bundle docker-compose \n\
-antigen bundle kubectl \n\
-antigen bundle kube-ps1 \n\
-antigen bundle helm \n\
-antigen bundle terraform \n\
-antigen bundle flux \n\
-antigen bundle pip \n\
-antigen bundle npm \n\n\
-# Load the theme. \n\
-antigen theme robbyrussell \n\n\
+\
 # Tell Antigen that you're done. \n\
-antigen apply \n\n\
-PROMPT=\$PROMPT'\$(kube_ps1) ' " >> $HOME/.zshrc
+antigen apply \n\n" >> $ANTIGEN/.antigen.sh
 
-    fi
-}
+        banner "$ANTIGEN/.antigen.sh"
 
-change_shell() {
-    if [ $(ps -p $$ -o comm=) != "zsh" ] && [ $SHELL != "/bin/zsh" ] || [ $SHELL != "/usr/bin/zsh" ]; then
-        echo "Changing shell..."
-        sudo chsh -s $(which zsh)
-    fi
-}
-
-backup_zshrc() {
-    is_exist $HOME/.zshrc
-    if [ $? -ne 0 ]; then
-        echo "Found ~/.zshrc, backing up to ~/.zshrc.pre-antigen"
-        mv $HOME/.zshrc $HOME/.zshrc.pre-antigen
-    fi
+            fi
 }
 
 init_zsh() {
+    
+    echo -e "Install ZSH \n"
+
+    install_zsh
+
     if [ $(ps -p $$ -o comm=) = "bash" ]; then
+        
+        echo "Current shell is $(ps -p $$ -o comm=) \n"
+        
         if [ ! -f "$HOME/.zshrc" ]; then
+
+            echo -e "~/.zshrc does not exist \n"
+
             if [ -f "$HOME/.bashrc" ] && [ -f "$HOME/.profile" ]; then
+
+                echo "Bakingup ~/.profile"
                 echo "Found ~/.bashrc and ~/.profile, backing up ~/.profile to ~/.profile.pre-zsh"
-                mv $HOME/.profile $HOME/.profile.pre-zsh
+                echo " "
+
+                cp $HOME/.profile $HOME/.profile.pre-zsh
                 
-                echo -e "# Initializing zsh\n" >> $HOME/.profile
+                echo -e "\n# Initializing zsh" >> $HOME/.profile
                 echo 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/Andygol/gcloud-shell-zsh/main/install.sh)"' >> $HOME/.profile
             fi
+
+            echo -e "Install Antigen \n"
+
             install_antigen
-            configure_zshrc
+            
+            echo -e "Configuring Antigen \n"
+            
+            configure_antigen
+            
+            echo -e "Install Oh My ZSH\n"
+
+            install_omz
+            
+            echo -e "Add Antigen to ~/.zshrc\n"
+            
+            sed -i '/source $ZSH\/oh-my-zsh.sh/a source $HOME\/.antigen\/.antigen.sh' ~/.zshrc 
         fi
-        install_zsh
+
+        echo -e "Run ZSH\n"
+
         $(grep /zsh$ /etc/shells | tail -1)
     fi
 }
