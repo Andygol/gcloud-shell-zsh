@@ -2,7 +2,7 @@
 
 ZSH with Antigen (Oh My ZSH)
 
-```
+```sh
   _______      __                __     _______ _______ ___ ___ 
  |   _   .----|  .-----.--.--.--|  |   |   _   |   _   |   Y   |
  |.  |___|  __|  |  _  |  |  |  _  |   |___|   |   |___|.  |   |
@@ -14,6 +14,8 @@ ZSH with Antigen (Oh My ZSH)
  Feature rich Google Cloud Shell with ZSH                       
                                                                 
  Check for updates https://github.com/Andygol/gcloud-shell-zsh  
+
+ Use omz plugin enable <list of plugins> to add couple of them
 ```
 
 ## Install
@@ -22,7 +24,7 @@ ZSH with Antigen (Oh My ZSH)
 2. Copy, paste and run
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/Andygol/gcloud-shell-zsh/main/install.sh | sh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/Andygol/gcloud-shell-zsh/main/install.sh)"
 ```
 
 ### Included plugins
@@ -44,12 +46,12 @@ omz plugin enable <list of pplugins>
 ## Uninstall
 
 - `rm -rf ~/.antigen ~/.oh-my-zsh`
-- `rm ~/.zsh*`
-- `sudo apt remove --purge zsh`
+- `rm -f ~/.zsh* ~/antigen.zsh`
+- `sudo apt remove --purge zsh -y`
 - `mv ~/.profile.pre-zsh ~/.profile`
 
 To install ZSH along with Oh My ZSH and Antigen, use the command provided below
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/Andygol/gcloud-shell-zsh/main/uninstall.sh | sh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/Andygol/gcloud-shell-zsh/main/uninstall.sh)"
 ```
