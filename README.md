@@ -22,7 +22,7 @@ ZSH with Antigen (Oh My ZSH)
 2. Paste and run
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/Andygol/gcloud-shell-zsh/main/install.sh | sh -c -
+curl -fsSL https://raw.githubusercontent.com/Andygol/gcloud-shell-zsh/main/install.sh | sh
 ```
 
 ### Included plugins
