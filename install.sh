@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ANTIGEN=$HOME/.antigen
 
@@ -28,9 +28,9 @@ install_package() {
     if ! command -v $package_name &> /dev/null; then
         echo "Installing $package_name..."
         if [ -z "$package_version" ]; then
-            sudo apt install -y $package_name && true
+            sudo apt install -y $package_name
         else
-            sudo apt install -y $package_name=$package_version && true
+            sudo apt install -y $package_name=$package_version
         fi
     fi
 }
@@ -83,50 +83,38 @@ antigen apply \n\n" >> $ANTIGEN/.antigen.sh
 init_zsh() {
     
     echo -e "Install ZSH \n"
-
     install_package zsh
+    
+    if [ ! -f "$HOME/.zshrc" ]; then
 
-    if [ $(ps -p $$ -o comm=) = "bash" ]; then
+        echo -e "~/.zshrc does not exist, it will be created... \n"
+
+        if [ -f "$HOME/.bashrc" ] && [ -f "$HOME/.profile" ]; then
+
+            echo "Backup ~/.profile"
+            echo "Found ~/.bashrc and ~/.profile, backup ~/.profile to ~/.profile.pre-zsh"
+            echo " "
+
+            cp $HOME/.profile $HOME/.profile.pre-zsh
         
-        echo "Current shell is $(ps -p $$ -o comm=) \n"
-        
-        if [ ! -f "$HOME/.zshrc" ]; then
-
-            echo -e "~/.zshrc does not exist \n"
-
-            if [ -f "$HOME/.bashrc" ] && [ -f "$HOME/.profile" ]; then
-
-                echo "Bakingup ~/.profile"
-                echo "Found ~/.bashrc and ~/.profile, backing up ~/.profile to ~/.profile.pre-zsh"
-                echo " "
-
-                cp $HOME/.profile $HOME/.profile.pre-zsh
-                
-                echo -e "\n# Initializing zsh" >> $HOME/.profile
-                echo 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/Andygol/gcloud-shell-zsh/main/install.sh)"' >> $HOME/.profile
-            fi
-
-            echo -e "Install Antigen \n"
-
-            install_antigen
-            
-            echo -e "Configuring Antigen \n"
-            
-            configure_antigen
-            
-            echo -e "Install Oh My ZSH\n"
-
-            install_omz
-            
-            echo -e "Add Antigen to ~/.zshrc\n"
-            
-            sed -i '/source $ZSH\/oh-my-zsh.sh/a source $HOME\/.antigen\/.antigen.sh' ~/.zshrc 
+            echo -e "\n# Initializing zsh" >> $HOME/.profile
+            echo 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/Andygol/gcloud-shell-zsh/main/install.sh)"' >> $HOME/.profile
         fi
 
-        echo -e "Run ZSH\n"
-
-        $(grep /zsh$ /etc/shells | tail -1)
+        echo -e "Antigen will be installed \n"
+        install_antigen
+        
+        echo -e "Antigen is being configured \n"
+        configure_antigen
+        
+        echo -e "Oh My ZSH will be installed \n"
+        install_omz
+        
+        echo -e "Add Antigen to ~/.zshrc\n"
+        sed -i '/source $ZSH\/oh-my-zsh.sh/a source $HOME\/.antigen\/.antigen.sh' ~/.zshrc 
     fi
+
+    exec zsh
 }
 
 init_zsh 
