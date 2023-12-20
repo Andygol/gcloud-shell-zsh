@@ -104,11 +104,12 @@ backup_zshrc() {
 init_zsh() {
     if [ $(ps -p $$ -o comm=) = "bash" ]; then
         if [ ! -f "$HOME/.zshrc" ]; then
-            if [ -f "$HOME/.bashrc" ]; then
-                echo "Found ~/.bashrc, backing up to ~/.bashrc.pre-zsh"
-                mv $HOME/.bashrc $HOME/.bashrc.pre-zsh
-
-                echo 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/Andygol/gcloud-shell-zsh/main/install.sh)"' >> $HOME/.bashrc
+            if [ -f "$HOME/.bashrc" ] && [ -f "$HOME/.profile" ]; then
+                echo "Found ~/.bashrc and ~/.profile, backing up ~/.profile to ~/.profile.pre-zsh"
+                mv $HOME/.profile $HOME/.profile.pre-zsh
+                
+                echo -e "# Initializing zsh\n" >> $HOME/.profile
+                echo 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/Andygol/gcloud-shell-zsh/main/install.sh)"' >> $HOME/.profile
             fi
             install_antigen
             configure_zshrc

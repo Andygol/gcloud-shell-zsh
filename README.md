@@ -50,4 +50,4 @@ curl -fsSL https://raw.githubusercontent.com/Andygol/gcloud-shell-zsh/main/insta
 - `rm -rf ~/.antigen`
 - `rm ~/.zsh*`
 - `sudo apt remove --purge zsh`
-- `mv ~/.bashrc.pre-zsh ~/.bashrc`
+- `mv ~/.profile.pre-zsh ~/.profile`
