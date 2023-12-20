@@ -103,7 +103,7 @@ backup_zshrc() {
 
 init_zsh() {
     if [ $(ps -p $$ -o comm=) = "bash" ]; then
-        if [ ! -f "$HOME/.zshrc" ]
+        if [ ! -f "$HOME/.zshrc" ]; then
             if [ -f "$HOME/.bashrc" ]; then
                 echo "Found ~/.bashrc, backing up to ~/.bashrc.pre-zsh"
                 mv $HOME/.bashrc $HOME/.bashrc.pre-zsh
