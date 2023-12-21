@@ -1,4 +1,4 @@
-# Gcloud Shell ZSH
+ого# Gcloud Shell ZSH
 
 ZSH with Antigen (Oh My ZSH)
 
@@ -50,7 +50,7 @@ omz plugin enable <list of plugins>
 - `sudo apt remove --purge zsh -y`
 - `mv ~/.profile.pre-zsh ~/.profile`
 
-To install ZSH along with Oh My ZSH and Antigen, use the command provided below
+To uninstall ZSH along with Oh My ZSH and Antigen, use the command provided below
 
 ```sh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/Andygol/gcloud-shell-zsh/main/uninstall.sh)"
