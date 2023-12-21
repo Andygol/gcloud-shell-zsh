@@ -40,13 +40,13 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/Andygol/gcloud-shell-zsh/m
 To install Oh My ZSH plugins, use the command provided below
 
 ```sh
-omz plugin enable <list of pplugins>
+omz plugin enable <list of plugins>
 ```
 
 ## Uninstall
 
 - `rm -rf ~/.antigen ~/.oh-my-zsh`
-- `rm -f ~/.zsh* ~/antigen.zsh`
+- `rm -f ~/.zsh*`
 - `sudo apt remove --purge zsh -y`
 - `mv ~/.profile.pre-zsh ~/.profile`
 
