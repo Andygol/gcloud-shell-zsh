@@ -1,4 +1,4 @@
-ого# Gcloud Shell ZSH
+# Gcloud Shell ZSH
 
 ZSH with Antigen (Oh My ZSH)
 
