@@ -111,7 +111,7 @@ init_zsh() {
         install_omz
         
         echo -e "Add Antigen to ~/.zshrc\n"
-        sed -i '/source $ZSH\/oh-my-zsh.sh/a source $HOME\/.antigen\/.antigen.sh' ~/.zshrc 
+        sed -i '/source $ZSH\/oh-my-zsh.sh/a source $HOME\/.antigen\/antigen.sh' ~/.zshrc 
     fi
 
     exec zsh
